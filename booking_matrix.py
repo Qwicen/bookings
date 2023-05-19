@@ -7,8 +7,8 @@ from datetime import date, timedelta
 def build_booking_matrix(df, date_start, date_end, pred_horizont):
     date_start = date.fromisoformat(date_start)
     cutoff_date = date.fromisoformat(date_end) + timedelta(days=pred_horizont-1)
-    df.date_book = df.date_book.apply(lambda x: date.fromisoformat(x))
-    df.date_in = df.date_in.apply(lambda x: date.fromisoformat(x))
+    #df.date_book = df.date_book.apply(lambda x: date.fromisoformat(x))
+    #df.date_in = df.date_in.apply(lambda x: date.fromisoformat(x))
     df["book_delta"] = df.date_in - df.date_book
     df["total_delta"] = df.book_delta + df.nights.apply(lambda x: timedelta(x))
     days_count = int((cutoff_date - date_start).days) + 1
