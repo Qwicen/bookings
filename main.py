@@ -11,20 +11,15 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--horizont", type=int, default=30)
-    group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument("--n_days", type=int)
-    group.add_argument("--date_start", type=str)
+    parser.add_argument("--n_days", type=int, default=365)
     args = parser.parse_args()
 
     today_date = date.today().isoformat()
-    if args.n_days is not None:
-        start_date = (date.fromisoformat(today_date) - timedelta(days=args.n_days)).isoformat()
-    else:
-        start_date = args.date_start
+    start_date = (date.fromisoformat(today_date) - timedelta(days=args.n_days)).isoformat()
     
     objects = yaml.safe_load(open("./configs/objects.yaml", 'r'))
     for obj in objects:
-        for room in objects[obj]:
+        for room in objects[obj]["room_types"]:
             df = get_bookings_from_db(objects[obj]["object_id"], room, start_date, today_date, args.horizont)
             if len(df) == 0: continue
             X, C, idx_to_date, date_to_idx = build_booking_matrix(df, start_date, today_date, args.horizont)
