@@ -27,4 +27,4 @@ if __name__ == "__main__":
             if len(df) == 0: continue
             X, C, idx_to_date, date_to_idx = build_booking_matrix(df, start_date, today_date, args.horizont)
             daily_fact = C[:,0]
-            push_predictions_to_db(obj, objects[obj]["object_id"], room_id[room], today_date, daily_fact, table='demand_fact')
+            push_predictions_to_db(obj, objects[obj]["object_id"], room, room_id[room], today_date, daily_fact, table='demand_fact')

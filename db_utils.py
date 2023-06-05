@@ -31,7 +31,7 @@ def get_bookings_from_db(object_id, room_type, date_start, date_end, pred_horizo
     db_connection.close()
     return df
 
-def push_predictions_to_db(obj, object_id, room, today_date, pred, table='demand_prediction', config_path="./configs/db_config.yaml"):
+def push_predictions_to_db(obj, object_id, room, room_id, today_date, pred, table='demand_prediction', config_path="./configs/db_config.yaml"):
     db_connection = connect_db(config_path)
     cursor = db_connection.cursor()
     query = (f"INSERT INTO {table} "
@@ -41,7 +41,7 @@ def push_predictions_to_db(obj, object_id, room, today_date, pred, table='demand
     for day_idx in range(pred.shape[0]):
         date_in = date.fromisoformat(today_date) + timedelta(days=day_idx)
         value = round(pred[day_idx], 2)
-        cursor.execute(query, (object_id, room, today_date, date_in.isoformat(), value, demand[day_idx]))
+        cursor.execute(query, (object_id, room_id, today_date, date_in.isoformat(), value, demand[day_idx]))
     db_connection.commit()
     cursor.close()
     db_connection.close()

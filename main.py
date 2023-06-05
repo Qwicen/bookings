@@ -26,4 +26,4 @@ if __name__ == "__main__":
             X, C, idx_to_date, date_to_idx = build_booking_matrix(df, start_date, today_date, args.horizont)
             pred, C_pred = build_pred_matrix(C, date_to_idx, today_date, args.horizont)
             daily_pred = C_pred[:,0]
-            push_predictions_to_db(obj, objects[obj]["object_id"], room_id[room], today_date, daily_pred)
+            push_predictions_to_db(obj, objects[obj]["object_id"], room, room_id[room], today_date, daily_pred)
