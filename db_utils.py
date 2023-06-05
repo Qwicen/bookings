@@ -35,7 +35,7 @@ def push_predictions_to_db(obj, object_id, room, today_date, pred, table='demand
     db_connection = connect_db(config_path)
     cursor = db_connection.cursor()
     query = (f"INSERT INTO {table} "
-             "(id_object, room_type_agg, dt_calc, dt_in, value, rate) "
+             "(id_object, room_type_agg, index_name, dt_calc, value, rate) "
              "VALUES (%s, %s, %s, %s, %s, %s)")
     demand = binarize(pred, obj, room)
     for day_idx in range(pred.shape[0]):

@@ -10,10 +10,11 @@ if __name__ == "__main__":
     db_connection = connect_db('./configs/db_config.yaml')
     cursor = db_connection.cursor()
     objects = yaml.safe_load(open("./configs/objects.yaml", 'r'))
+    room_id = {'Апартаменты': 0, 'Коттеджи': 1, 'Стандарт': 2, 'Студия': 3}
     today_date = date.today().isoformat()
 
     insert_query = ("INSERT INTO probability "
-        "(id_object, room_type_agg, dt_calc, month, weekday, value) "
+        "(id_object, room_type_agg, index_name, month, weekday, value) "
         "VALUES (%s, %s, %s, %s, %s, %s)")
     
     for obj in objects:
@@ -38,7 +39,7 @@ if __name__ == "__main__":
                         rate = np.sum(df.status_book == 'Активный') / len(df)
                     value = np.round(rate, 2).astype(float)
                     probas[month][weekday] = value
-                    cursor.execute(insert_query, (objects[obj]["object_id"], room_type, today_date, month, weekday, value))
+                    cursor.execute(insert_query, (objects[obj]["object_id"], room_id[room_type], today_date, month, weekday, value))
             db_connection.commit()
     cursor.close()
     db_connection.close()
