@@ -20,7 +20,7 @@ if __name__ == "__main__":
         start_date = args.date_start
     
     objects = yaml.safe_load(open("./configs/objects.yaml", 'r'))
-    room_id = {'Апартаменты': 0, 'Коттеджи': 1, 'Стандарт': 2, 'Студия': 3}
+    room_id = {'Апартаменты': 0, 'Коттедж': 1, 'Стандарт': 2, 'Студия': 3}
     for obj in objects:
         for room in objects[obj]["room_types"]:
             df = get_bookings_from_db(objects[obj]["object_id"], room, start_date, today_date, args.horizont)

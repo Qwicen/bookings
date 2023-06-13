@@ -10,7 +10,7 @@ if __name__ == "__main__":
     db_connection = connect_db('./configs/db_config.yaml')
     cursor = db_connection.cursor()
     objects = yaml.safe_load(open("./configs/objects.yaml", 'r'))
-    room_id = {'Апартаменты': 0, 'Коттеджи': 1, 'Стандарт': 2, 'Студия': 3}
+    room_id = {'Апартаменты': 0, 'Коттедж': 1, 'Стандарт': 2, 'Студия': 3}
     today_date = date.today().isoformat()
 
     insert_query = ("INSERT INTO probability "
