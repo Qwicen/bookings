@@ -37,7 +37,7 @@ def push_predictions_to_db(obj, object_id, room, room_id, today_date, pred, tabl
     query = (f"INSERT INTO {table} "
              "(id_object, room_type_agg, index_name, dt_calc, value, rate) "
              "VALUES (%s, %s, %s, %s, %s, %s)")
-    demand = binarize(pred, obj, room)
+    demand = binarize(pred, obj, room, config_path)
     for day_idx in range(pred.shape[0]):
         date_in = date.fromisoformat(today_date) + timedelta(days=day_idx)
         value = round(pred[day_idx], 2)
