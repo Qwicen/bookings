@@ -1,3 +1,4 @@
+import os
 import yaml
 import numpy as np
 import pandas as pd
@@ -7,9 +8,10 @@ from collections import defaultdict
 
 
 if __name__ == "__main__":
-    db_connection = connect_db('./configs/db_config.yaml')
+    dirname = os.path.abspath(os.path.dirname(__file__))
+    db_connection = connect_db(os.path.join(dirname, './configs/db_config.yaml'))
     cursor = db_connection.cursor()
-    objects = yaml.safe_load(open("./configs/objects.yaml", 'r'))
+    objects = yaml.safe_load(open(os.path.join(dirname, "./configs/objects.yaml"), 'r'))
     room_id = {'Апартаменты': 0, 'Коттедж': 1, 'Стандарт': 2, 'Студия': 3}
     today_date = date.today().isoformat()
 
