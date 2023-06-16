@@ -31,13 +31,14 @@ def get_bookings_from_db(object_id, room_type, date_start, date_end, pred_horizo
     db_connection.close()
     return df
 
-def push_predictions_to_db(obj, object_id, room, room_id, today_date, pred, table='demand_prediction', config_path="./configs/db_config.yaml"):
+def push_predictions_to_db(obj, object_id, room, room_id, today_date, pred, table='demand_prediction', 
+                           config_path="./configs/db_config.yaml", objects_path="./configs/objects.yaml"):
     db_connection = connect_db(config_path)
     cursor = db_connection.cursor()
     query = (f"INSERT INTO {table} "
              "(id_object, room_type_agg, index_name, dt_calc, value, rate) "
              "VALUES (%s, %s, %s, %s, %s, %s)")
-    demand = binarize(pred, obj, room, config_path)
+    demand = binarize(pred, obj, room, objects_path)
     for day_idx in range(pred.shape[0]):
         date_in = date.fromisoformat(today_date) + timedelta(days=day_idx)
         value = round(pred[day_idx], 2)

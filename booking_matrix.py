@@ -44,8 +44,8 @@ def build_pred_matrix(booking_C, date_to_idx, date_end, pred_horizont):
     noncum_pred = -np.diff(predictions)[1:]
     return noncum_pred, predictions[1:,:-1]
 
-def binarize(bookings, object, room_type, config_path="./configs/objects.yaml"):
-    bins = yaml.safe_load(open(config_path, 'r'))
+def binarize(bookings, object, room_type, objects_path):
+    bins = yaml.safe_load(open(objects_path, 'r'))
     indices = np.digitize(bookings, bins[object]["room_types"][room_type], right=True)
     demand = np.vectorize({0: "Low", 1: "Neutral", 2 : "High"}.get)(indices)
     return demand
