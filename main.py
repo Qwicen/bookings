@@ -31,4 +31,4 @@ if __name__ == "__main__":
             pred, C_pred = build_pred_matrix(C, date_to_idx, today_date, args.horizont)
             daily_pred = C_pred[:,0]
             push_predictions_to_db(obj, objects[obj]["object_id"], room, room_id[room], today_date, daily_pred,
-                                   config_path, objects_path)
+                                   config_path=config_path, objects_path=objects_path)
