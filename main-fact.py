@@ -11,7 +11,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--horizont", type=int, default=124)
-    parser.add_argument("--n_days", type=int, default=1)
+    parser.add_argument("--n_days", type=int, default=30)
     args = parser.parse_args()
     dirname = os.path.abspath(os.path.dirname(__file__))
     config_path = os.path.join(dirname, './configs/db_config.yaml')
@@ -30,6 +30,6 @@ if __name__ == "__main__":
                                       config_path=config_path)
             if len(df) == 0: continue
             X, C, idx_to_date, date_to_idx = build_booking_matrix(df, start_date, today_date, args.horizont)
-            daily_fact = C[:,0]
+            daily_fact = C[-args.horizont:,0]
             push_predictions_to_db(obj, objects[obj]["object_id"], room, room_id[room], today_date, daily_fact, table='demand_fact', 
                                    config_path=config_path, objects_path=objects_path)
