@@ -2,7 +2,7 @@ import os
 import yaml
 import numpy as np
 import pandas as pd
-from datetime import date
+from datetime import date, timedelta
 from db_utils import connect_db
 from collections import defaultdict
 
@@ -13,7 +13,12 @@ if __name__ == "__main__":
     cursor = db_connection.cursor()
     objects = yaml.safe_load(open(os.path.join(dirname, "./configs/objects.yaml"), 'r'))
     room_id = {'Стандарт': 0, 'Апартаменты': 1, 'Коттедж': 2, 'Студия': 3}
-    today_date = date.today().isoformat()
+    today_datetime = date.today()
+    f_date = today_datetime - timedelta(days=(today_datetime.day - 1))
+    s_date = date(f_date.year - 1, f_date.month, f_date.day)
+    f_date = f_date.isoformat()
+    s_date = s_date.isoformat()
+    today_date = today_datetime.isoformat()
 
     insert_query = ("INSERT INTO probability "
         "(id_object, room_type_agg, index_name, month, weekday, value) "
@@ -32,7 +37,9 @@ if __name__ == "__main__":
                                     id_object={objects[obj]["object_id"]} AND 
                                     room_type_agg=\"{room_type}\" AND
                                     weekday(date_in)={weekday} AND
-                                    month(date_in)={month};
+                                    month(date_in)={month} AND
+                                    date_in>=\"{s_date}\" AND
+                                    date_in<\"{f_date}\";
                             """
                     df = pd.read_sql(query, db_connection)
                     if len(df) == 0:
